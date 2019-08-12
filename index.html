@@ -40,6 +40,7 @@
 
   </nav>
 
+  <!-- MATORDER LISTA -->
   <div class="container">
     <table class="table">
       <thead>
@@ -51,37 +52,24 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody id="order-list">
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SAMMANSTÄLLNING MATORDER -->
+  <div class="container">
+    <table class="table">
+      <thead>
         <tr>
-          <th scope="row">1</th>
-          <th>Simon</th>
-          <th>Kebabpizza</th>
-          <th>Cola Zero</th>
+          <th scope="col">#</th>
+          <th scope="col">Order</th>
         </tr>
-        <tr>
-          <th scope="row">1</th>
-          <th>Rickard</th>
-          <th>Kebabpizza</th>
-          <th>Cola Zero</th>
-        </tr>
-        <tr>
-          <th scope="row">1</th>
-          <th>Simon</th>
-          <th>Kebabpizza</th>
-          <th>Cola Zero</th>
-        </tr>
-        <tr>
-          <th scope="row">1</th>
-          <th>Simon</th>
-          <th>Kebabpizza</th>
-          <th>Cola Zero</th>
-        </tr>
-        <tr>
-          <th scope="row">1</th>
-          <th>Simon</th>
-          <th>Kebabpizza</th>
-          <th>Cola Zero</th>
-        </tr>
+      </thead>
+
+      <tbody id="order-summary">
+
       </tbody>
     </table>
   </div>
@@ -90,7 +78,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">LÄGG TILL MATORDER</h5>
+          <h5 class="modal-title">LÄGG TILL MATOasRDER</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -99,18 +87,20 @@
 
           <form autocomplete="off">
             <div class="form-group">
-              <label for="exampleFormControlInput1">NAMN</label>
-              <input type="text" class="form-control" id="exampleFormControlInput1">
+              <label for="order-name">NAMN</label>
+              <input type="text" class="form-control" id="order-name">
             </div>
 
             <div class="bs-example form-group">
-              <label for="exampleFormControlInput1">MAT</label>
-              <input type="text" class="typeahead form-control">
+              <label for="order-meal">MAT</label>
+              <input id="order-meal" type="text" class="typeahead form-control">
             </div>
 
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Dricka</label>
-              <select class="form-control" id="exampleFormControlSelect1">
+              <label for="order-drink">Dricka</label>
+              <select class="form-control" id="order-drink">
+                <option>Ingen dricka</option>
+                <option>Vatten</option>
                 <option>Cola</option>
                 <option>Cola Zero</option>
                 <option>Trocadero</option>
@@ -130,7 +120,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">STÄNG</button>
-          <button type="button" class="btn btn-success">SPARA</button>
+          <button type="button" onclick="saveOrder()" class="btn btn-success">SPARA</button>
         </div>
       </div>
     </div>

@@ -1,7 +1,72 @@
+var orderlist = [];
+var test;
+var mealcount = [];
+var drinklist = [];
+
+function Order(name, meal, drink){
+  this.orderName = name;
+  this.orderMeal = meal;
+  this.orderDrink = drink;
+}
+
+function saveOrder(){
+  var order = new Order();
+  order.name = $("#order-name").val();
+  order.meal = $("#order-meal").val();
+  order.drink = $("#order-drink").val();
+
+  if(order.name == "" || order.meal == ""){
+    console.log("TODO: Kasta error, någon form av visuell feedback på att något gick fel");
+  }else{
+
+    orderlist.push(order);
+
+    writeList();
+    //writeSummary();
+    $('#addpersonmodal').modal('toggle');
+    $("#order-name").val("");
+    $("#order-meal").val("");
+    $("#order-drink").val("Ingen dricka");
+  }
+}
+
+function writeSummary(){
+
+  var countsDrink = [];
+  var countsFood = [];
+  var uniqueDrink = [];
+  var uniqueFood = [];
+
+  for(i = 0; i < orderlist.length; i++){
+    uniqueDrink.push(orderlist[i].drink);
+  }
+
+  uniqueDrink.forEach(function(x) { countsDrink[x] = (countsDrink[x] || 0)+1; });
+  test = countsDrink;
+
+  console.log(test);
+
+  for(y = 0; y < orderlist.length; y++){
+    uniqueFood.push(orderlist[y].meal);
+  }
+  uniqueFood.forEach(function(x) { countsFood[x] = (countsFood[x] || 0)+1; });
+
+  for(z = 0; z < uniqueDrink.length; z++){
+
+  }
+}
+
+function writeList(){
+  $("#order-list").html("");
+  for(i = 0; i < orderlist.length; i++){
+    $("#order-list").append('<tr><th scope="row">' + (i + 1).toString() + '</th><th>' + orderlist[i].name + '</th><th>' + orderlist[i].meal + '</th><th>' + orderlist[i].drink + '</th></tr>');
+  }
+}
+
 $(function(){
   $(".typeahead").typeahead({
     source: [
-      {id: "id1", name: "Margerita"},
+      {id: "id1", name: "Margarita"},
       {id: "id2", name: "Champinjonpizza"},
       {id: "id3", name: "Vesuvio"},
       {id: "id4", name: "Räkpizza"},
@@ -148,6 +213,4 @@ $(function(){
     delay: 0,
 
   });
-
-
 });
