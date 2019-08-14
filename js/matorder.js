@@ -21,67 +21,88 @@ function saveOrder(){
 
     orderlist.push(order);
 
-    writeList();
-    writeMealSummary(order);
-    writeDrinkSummary(order);
+
+
     $('#addpersonmodal').modal('toggle');
     $("#order-name").val("");
     $("#order-meal").val("");
     $("#order-drink").val("Ingen dricka");
+    //writeList();
+    //writeSummary();
+    writeMealSummary();
+    writeDrinkSummary();
     writeList();
   }
 }
 
-function writeMealSummary(order){
-  var itemExist = false;
+function removeOrder(orderIndex){
+  orderlist.splice(orderIndex, 1);
 
-  for(x = 0; x < mealcount.length; x++){
-    if(order.meal == mealcount[x].meal){
-      itemExist = true;
-    }
-  }
-
-  if(mealcount.length == 0){
-    mealcount.push({meal: order.meal, count: 1});
-    console.log("Beställde första måltiden, en " + order.meal);
-  }else if(itemExist){
-    for(i = 0; i < mealcount.length; i++){
-      if(order.meal == mealcount[i].meal){
-        mealcount[i].count++;
-      }
-    }
-  }else{
-    mealcount.push({meal: order.meal, count: 1});
-  }
+  writeMealSummary();
+  writeDrinkSummary();
+  writeList();
 }
 
-function writeDrinkSummary(order){
-  var itemExist = false;
+function writeDrinkSummary(){
+  var tempArray = [];
+  for(i = 0; i < orderlist.length; i++){
 
-  for(x = 0; x < drinkcount.length; x++){
-    if(order.drink == drinkcount[x].drink){
-      itemExist = true;
-    }
-  }
+    var itemExist = false;
 
-  if(drinkcount.length == 0){
-    drinkcount.push({drink: order.drink, count: 1});
-    console.log("Beställde första drycken, en " + order.drink);
-  }else if(itemExist){
-    for(i = 0; i < drinkcount.length; i++){
-      if(order.drink == drinkcount[i].drink){
-        drinkcount[i].count++;
+    for(x = 0; x < tempArray.length; x++){
+      if(orderlist[i].drink == tempArray[x].drink){
+        itemExist = true;
       }
     }
-  }else{
-    drinkcount.push({drink: order.drink, count: 1});
+
+    if(tempArray.length == 0){
+      tempArray.push({drink: orderlist[i].drink, count: 1});
+    }else if(itemExist){
+      for(y = 0; y < tempArray.length; y++){
+        if(orderlist[i].drink == tempArray[y].drink){
+          tempArray[y].count++;
+        }
+      }
+    }else{
+      tempArray.push({drink: orderlist[i].drink, count: 1});
+    }
   }
+  drinkcount = tempArray;
+  //console.log(tempArray);
+}
+
+function writeMealSummary(){
+  var tempArray = [];
+  for(i = 0; i < orderlist.length; i++){
+
+    var itemExist = false;
+
+    for(x = 0; x < tempArray.length; x++){
+      if(orderlist[i].meal == tempArray[x].meal){
+        itemExist = true;
+      }
+    }
+
+    if(tempArray.length == 0){
+      tempArray.push({meal: orderlist[i].meal, count: 1});
+    }else if(itemExist){
+      for(y = 0; y < tempArray.length; y++){
+        if(orderlist[i].meal == tempArray[y].meal){
+          tempArray[y].count++;
+        }
+      }
+    }else{
+      tempArray.push({meal: orderlist[i].meal, count: 1});
+    }
+  }
+  mealcount = tempArray;
+  //console.log(tempArray);
 }
 
 function writeList(){
   $("#order-list").html("");
   for(i = 0; i < orderlist.length; i++){
-    $("#order-list").append('<tr><th scope="row">' + (i + 1).toString() + '</th><th>' + orderlist[i].name + '</th><th>' + orderlist[i].meal + '</th><th>' + orderlist[i].drink + '</th></tr>');
+    $("#order-list").append('<tr><th scope="row">' + (i + 1).toString() + '</th><th>' + orderlist[i].name + '</th><th>' + orderlist[i].meal + '</th><th>' + orderlist[i].drink + '</th><th><button type="button" onclick="removeOrder(' + i + ')" class="btn btn-danger">x</button</th></tr>');
   }
 
   $("#order-summary").html("");
