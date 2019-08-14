@@ -1,7 +1,7 @@
 var orderlist = [];
-var test;
+
 var mealcount = [];
-var drinklist = [];
+var drinkcount = [];
 
 function Order(name, meal, drink){
   this.orderName = name;
@@ -22,37 +22,59 @@ function saveOrder(){
     orderlist.push(order);
 
     writeList();
-    //writeSummary();
+    writeMealSummary(order);
+    writeDrinkSummary(order);
     $('#addpersonmodal').modal('toggle');
     $("#order-name").val("");
     $("#order-meal").val("");
     $("#order-drink").val("Ingen dricka");
+    writeList();
   }
 }
 
-function writeSummary(){
+function writeMealSummary(order){
+  var itemExist = false;
 
-  var countsDrink = [];
-  var countsFood = [];
-  var uniqueDrink = [];
-  var uniqueFood = [];
-
-  for(i = 0; i < orderlist.length; i++){
-    uniqueDrink.push(orderlist[i].drink);
+  for(x = 0; x < mealcount.length; x++){
+    if(order.meal == mealcount[x].meal){
+      itemExist = true;
+    }
   }
 
-  uniqueDrink.forEach(function(x) { countsDrink[x] = (countsDrink[x] || 0)+1; });
-  test = countsDrink;
-
-  console.log(test);
-
-  for(y = 0; y < orderlist.length; y++){
-    uniqueFood.push(orderlist[y].meal);
+  if(mealcount.length == 0){
+    mealcount.push({meal: order.meal, count: 1});
+    console.log("Beställde första måltiden, en " + order.meal);
+  }else if(itemExist){
+    for(i = 0; i < mealcount.length; i++){
+      if(order.meal == mealcount[i].meal){
+        mealcount[i].count++;
+      }
+    }
+  }else{
+    mealcount.push({meal: order.meal, count: 1});
   }
-  uniqueFood.forEach(function(x) { countsFood[x] = (countsFood[x] || 0)+1; });
+}
 
-  for(z = 0; z < uniqueDrink.length; z++){
+function writeDrinkSummary(order){
+  var itemExist = false;
 
+  for(x = 0; x < drinkcount.length; x++){
+    if(order.drink == drinkcount[x].drink){
+      itemExist = true;
+    }
+  }
+
+  if(drinkcount.length == 0){
+    drinkcount.push({drink: order.drink, count: 1});
+    console.log("Beställde första drycken, en " + order.drink);
+  }else if(itemExist){
+    for(i = 0; i < drinkcount.length; i++){
+      if(order.drink == drinkcount[i].drink){
+        drinkcount[i].count++;
+      }
+    }
+  }else{
+    drinkcount.push({drink: order.drink, count: 1});
   }
 }
 
@@ -60,6 +82,15 @@ function writeList(){
   $("#order-list").html("");
   for(i = 0; i < orderlist.length; i++){
     $("#order-list").append('<tr><th scope="row">' + (i + 1).toString() + '</th><th>' + orderlist[i].name + '</th><th>' + orderlist[i].meal + '</th><th>' + orderlist[i].drink + '</th></tr>');
+  }
+
+  $("#order-summary").html("");
+  for(y = 0; y < mealcount.length; y++){
+    $("#order-summary").append('<tr><th scope="row">' + (mealcount[y].count).toString() + '</th><th>' + (mealcount[y].meal).toString() + '</th></tr>');
+  }
+
+  for(z = 0; z < drinkcount.length; z++){
+    $("#order-summary").append('<tr><th scope="row">' + (drinkcount[z].count).toString() + '</th><th>' + (drinkcount[z].drink).toString() + '</th></tr>');
   }
 }
 
@@ -137,6 +168,7 @@ $(function(){
       {id: "id70", name: "Vegetarisk (Rull-Pizza)"},
       {id: "id71", name: "Kycklingrulle (Rull-Pizza)"},
       {id: "id72", name: "Kebabpizza"},
+      {id: "id722",name: "Kebabpizza + Pommes"},
       {id: "id73", name: "Umeå Special Kebabpizza"},
       {id: "id74", name: "Julia"},
       {id: "id75", name: "Husets Kebabpizza"},
